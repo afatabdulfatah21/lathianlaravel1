@@ -113,12 +113,17 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy($id)
     {
-        $image_path = "/images/" . $post->thumbnail;
-        if(File::exists($image_path)){
-            File::delete($image_path);
+        $post = Post::find($id);
+        if (file_exists($post->thumbnail)) {
+            unlink($post->thumbnail);
         }
+
+        // $image_path = "/images/" . $post->thumbnail;
+        // if(File::exists($image_path)){
+        //     File::delete($image_path);
+        // }
         $post->delete();
         return redirect('user');
     }

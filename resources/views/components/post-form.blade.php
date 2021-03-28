@@ -7,7 +7,7 @@
 ])
 
 @push('styles')
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+{{-- <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> --}}
 @endpush
 
 @if(session()->has('success'))
@@ -33,8 +33,11 @@
     <div class="form-group">
       <label>Thumbnail</label>
       @if($thumbnail !== '')
-        <img src="{{ asset('images/' . $thumbnail) }}" class="img-fluid" />
+        <br>
+        <img src="{{ asset('images/' . $thumbnail) }}" width="100" height="auto"/>
+        
       @endif
+      
       <input type="file" name="thumbnail" value="{{ old('thumbnail') }}" class="form-control @error('thumbnail') is-invalid @enderror" placeholder="Your post thumbnail">
       @error('thumbnail')
         <div class="invalid-feedback">
@@ -44,7 +47,7 @@
     </div>
     <div class="form-group">
         <label>Content</label>
-        <textarea id="summernote" name="content" placeholder="Your post content" class="@error('content') is-invalid @enderror">{{ old('content') ?? $content }}</textarea>
+        <textarea id="editor" name="content" placeholder="Your post content" class="@error('content') is-invalid @enderror">{{ old('content') ?? $content }}</textarea>
         @error('content')
           <div class="invalid-feedback">
             {{ $message }}
@@ -58,10 +61,8 @@
 </form> 
 
 @push('scripts')  
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
     <script>
-        $(document).ready(function() {
-        $('#summernote').summernote();
-        });
+        CKEDITOR.replace( 'editor' );
     </script>
 @endpush
